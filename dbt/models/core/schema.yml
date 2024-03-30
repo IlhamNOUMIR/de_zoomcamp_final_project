@@ -1,0 +1,21 @@
+models:
+  - name: dim_location
+    description: >
+      List of unique locations where collisions occurred
+  - name: fact_crashes
+    description: >
+      Table containing aggregated information about vehicle crashes
+    columns:
+      - name: borough
+        description: The borough where the crash occurred
+      - name: zip_code
+        description: The postal code of the crash location
+      - name: total_accidents
+        description: The total number of accidents in the specified borough and zip code
+      - name: total_persons_injured
+        description: The total number of persons injured in the specified borough and zip code
+      - name: total_persons_killed
+        description: The total number of persons killed in the specified borough and zip code
+
+      
+        
