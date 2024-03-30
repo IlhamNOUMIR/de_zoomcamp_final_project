@@ -1,3 +1,13 @@
+{{ config(
+    partition_by={
+        "field": "crash_datetime",
+        "data_type": "timestamp",
+        "granularity": "year"
+    },
+    cluster_by=["borough"]
+) }}
+
+
 
 with source as (
     select 
@@ -11,20 +21,19 @@ with source as (
         on_street_name,
         number_of_persons_injured,
         number_of_persons_killed,
-        contributing_factor_vehicle_1,
-        contributing_factor_vehicle_2,
-        vehicle_type_code_1,
-        vehicle_type_code_2
-    from {{ ref('staging_crashes') }}  
+        contributing_factor_vehicle_1
+    from `complete-land-417013`.`dbt_inoumir`.`staging_crashes`
 )
 
+
 select 
+    EXTRACT(YEAR FROM crash_datetime) as year,
     borough,
-    zip_code,
+    MAX(contributing_factor_vehicle_1) AS most_common_contributing_factor,
     count(*) as total_accidents,
     sum(number_of_persons_injured) as total_persons_injured,
-    sum(number_of_persons_killed) as total_persons_killed,
+    sum(number_of_persons_killed) as total_persons_killed
 from source
 group by 
-    borough,
-    zip_code
+    year,
+    borough
