@@ -1,0 +1,43 @@
+sources:
+  - name: staging
+    database: complete-land-417013
+    schema: nyc_motor_vehicle_collision
+    tables:
+      - name: crashes
+        description: >
+          The Motor Vehicle Collisions database records crash events reported by the NYPD in NYC, requiring a filled MV104-AN for incidents involving injuries, fatalities, or $1000+ damage.
+        columns: 
+          - name: collision_id
+            description: Primary key for this table, generated with a concatenation of vendorid+pickup_datetime
+            tests:
+              - unique:
+                  severity: warn
+              - not_null:
+                  severity: warn
+            nullability: nullable      
+          - name: crash_datetime
+            description: Combination of date and time of collision
+          - name: borough
+            description: Borough where collision occurred
+          - name: zip_code 
+            description: Postal code of incident occurrence
+          - name: latitude
+            description: Latitude coordinate for Global Coordinate System
+          - name: longitude
+            description: Longitude coordinate for Global Coordinate System
+          - name: location
+            description: Latitude , Longitude pair
+          - name: on_street_name
+            description: Street on which the collision occurred
+          - name: number_of_persons_injured
+            description: Number of persons injured
+          - name: number_of_persons_killed
+            description: Number of persons killed
+          - name: contributing_factor_vehicle_1
+            description: Factors contributing to the collision for designated vehicle
+          - name: contributing_factor_vehicle_2
+            description: Factors contributing to the collision for designated vehicle
+          - name: vehicle_type_code_1
+            description: Type of vehicle based on the selected vehicle category 
+          - name: vehicle_type_code_2
+            description: Type of vehicle based on the selected vehicle category 
