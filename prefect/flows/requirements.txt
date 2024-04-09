@@ -1,4 +1,4 @@
-python==1.5.2
+pandas==1.5.2
 prefect==2.16.4
 prefect_gcp==0.2.4
 pyspark==3.3.2
