@@ -20,6 +20,12 @@ basedir=os.path.abspath(os.getcwd())
 load_dotenv(os.path.join(basedir, '../.env'))
 
 
+my_gcp_creds = GcpCredentials(
+    service_account_info=os.environ.get("GCP_SERVICE_ACCOUNT_KEY_FILE_CONTENTS"), 
+)
+my_gcp_creds.save(name="my-gcp-creds-block", overwrite=True)
+
+
 credentials_location = os.getenv('CREDENTIALS_LOCATION')
 
 conf = SparkConf() \
@@ -103,7 +109,7 @@ def save_on_local(data, data_dir: str = 'data') -> Path:
 
 @task()
 def write_to_gcs(path: Path) -> None:
-    gcp_credentials = GcpCredentials.load(os.getenv("GCP_CREDENTIALS"))
+    gcp_credentials = GcpCredentials.load("my-gcp-creds-block")
     gcs_bucket = GcsBucket(
         bucket= os.getenv("GCP_BUCKET"),
         gcp_credentials=gcp_credentials
@@ -118,7 +124,7 @@ def write_to_gcs(path: Path) -> None:
 @task
 def transform_data() :
     
-    gcp_credentials = GcpCredentials.load(os.getenv("GCP_CREDENTIALS"))
+    gcp_credentials = GcpCredentials.load("my-gcp-creds-block")
     gcs_bucket = GcsBucket(
         bucket= os.getenv("GCP_BUCKET"),
         gcp_credentials=gcp_credentials
